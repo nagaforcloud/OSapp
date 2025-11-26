@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "onestream-rag"
+version = "0.1.0"
+description = "RAG Chatbot for Onestream Documentation"
+authors = [{name = "Your Name"}]
+dependencies = [
+    "streamlit",
+    "langchain-qdrant",
+    "langchain-mistralai",
+    "langgraph",
+    "python-decouple",
+    "unstructured[pdf]"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]

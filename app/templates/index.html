@@ -1,0 +1,793 @@
+<!-- app/templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBot - Onestream AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Expert-level CSS Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Root variables for consistent theming based on color theory */
+        :root {
+            /* Expert color palette - carefully chosen for visual harmony and accessibility */
+            --primary: #4361ee;        /* Main brand blue - evokes trust and professionalism */
+            --primary-dark: #3a56d4;   /* Darker variant for depth and contrast */
+            --primary-light: #edf2ff;  /* Light variant for backgrounds and highlights */
+            --secondary: #7209b7;      /* Complementary purple - adds sophistication */
+            --secondary-light: #e0c8f5;/* Light purple for subtle accents */
+            --surface: #ffffff;        /* Main surface color - clean white */
+            --background: #f8f9fa;     /* Page background - soft neutral */
+            --card-bg: #ffffff;        /* Card backgrounds - crisp white */
+            --border: #e9ecef;         /* Subtle borders - light gray */
+            --text-primary: #212529;   /* Main text - dark gray for readability */
+            --text-secondary: #495057; /* Secondary text - medium gray */
+            --text-tertiary: #6c757d;  /* Helper text - light gray */
+            --text-inverse: #ffffff;   /* Text on dark backgrounds - pure white */
+            --success: #4caf50;        /* Success states - green */
+            --warning: #ff9800;        /* Warning states - orange */
+            --error: #f44336;          /* Error states - red */
+            --info: #2196f3;           /* Info states - blue */
+            
+            /* Expert spacing scale based on modular scale */
+            --space-xxs: 0.25rem;      /* 4px */
+            --space-xs: 0.5rem;        /* 8px */
+            --space-sm: 0.75rem;       /* 12px */
+            --space-md: 1rem;          /* 16px */
+            --space-lg: 1.5rem;        /* 24px */
+            --space-xl: 2rem;          /* 32px */
+            --space-xxl: 3rem;         /* 48px */
+            
+            /* Expert border radius scale for visual consistency */
+            --radius-sm: 6px;          /* Small rounded corners */
+            --radius-md: 12px;         /* Medium rounded corners */
+            --radius-lg: 18px;         /* Large rounded corners */
+            --radius-xl: 24px;         /* Extra large rounded corners */
+            --radius-full: 50%;        /* Circular elements */
+            
+            /* Expert shadow scale for depth and hierarchy */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);    /* Subtle depth */
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);   /* Moderate depth */
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);   /* Strong depth */
+        }
+
+        /* Base styles with expert typography */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, #e6f7ff 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Main container with optimal width and padding */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-md);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* App header with professional styling */
+        .app-header {
+            text-align: center;
+            padding: var(--space-xl) var(--space-md);
+            margin-bottom: var(--space-md);
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Gradient accent bar for visual interest */
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        /* Header title with gradient text effect */
+        .app-header h1 {
+            color: var(--text-primary);
+            margin: 0 0 var(--space-xs);
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Header subtitle with professional tone */
+        .app-header p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 400;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Status indicator with clear visual feedback */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-full);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: var(--space-md);
+            align-self: center;
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            border: 1px solid var(--border);
+        }
+
+        /* Chat container with modern styling */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 65vh;
+            overflow-y: auto;
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            background-color: var(--card-bg);
+            margin-bottom: var(--space-md);
+            scroll-behavior: smooth;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        /* Message bubbles with elegant styling */
+        .message {
+            max-width: 85%;
+            padding: var(--space-md) var(--space-lg);
+            margin-bottom: var(--space-md);
+            border-radius: var(--radius-xl);
+            line-height: 1.6;
+            position: relative;
+            animation: fadeIn 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* Hover effect for messages */
+        .message:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* User messages (right-aligned) */
+        .user-message {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #dbe6ff 100%);
+            color: var(--text-primary);
+            align-self: flex-end;
+            border-bottom-right-radius: var(--radius-sm);
+            border-left: 3px solid var(--primary);
+        }
+
+        /* AI messages (left-aligned) */
+        .ai-message {
+            background-color: var(--surface);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: var(--radius-sm);
+            border-left: 3px solid var(--secondary-light);
+            border: 1px solid var(--border);
+        }
+
+        /* Message sender with icon */
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            color: var(--text-secondary);
+        }
+
+        /* Welcome message with friendly styling */
+        .welcome-message {
+            text-align: center;
+            color: var(--text-secondary);
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            max-width: 85%;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .welcome-message h3 {
+            color: var(--text-primary);
+            margin-top: 0;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .welcome-message p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .welcome-message ul {
+            text-align: left;
+            display: inline-block;
+            margin: var(--space-md) 0;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .welcome-message li {
+            margin-bottom: var(--space-xs);
+        }
+
+        /* Input area with fixed positioning */
+        .input-area {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            position: sticky;
+            bottom: 0;
+        }
+
+        /* Input container with flex layout */
+        .input-container {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+
+        /* Input field with modern styling */
+        .chat-input {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-full);
+            font-size: 1rem;
+            color: var(--text-primary);
+            background: var(--surface);
+            transition: all 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* Send button with gradient styling */
+        .send-button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            padding: var(--space-sm) var(--space-lg);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.4);
+        }
+
+        .send-button:active {
+            transform: translateY(0);
+        }
+
+        .send-button:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            margin-top: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            background: var(--surface);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-xs) var(--space-sm);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .action-button:hover {
+            background: var(--background);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(15px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        @keyframes fadeInUp {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        /* Scrollbar styling */
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-container::-webkit-scrollbar-track {
+            background: var(--background);
+            border-radius: var(--radius-sm);
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: var(--radius-sm);
+        }
+
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: var(--text-tertiary);
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border);
+            align-self: flex-start;
+            border-bottom-left-radius: var(--radius-sm);
+            border-left: 3px solid var(--secondary-light);
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-tertiary);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        /* Footer styling */
+        footer {
+            text-align: center;
+            padding: var(--space-md);
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        /* Responsive design for mobile devices */
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--space-sm);
+            }
+
+            .app-header {
+                padding: var(--space-lg) var(--space-sm);
+            }
+
+            .app-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .message {
+                max-width: 90%;
+                padding: var(--space-sm) var(--space-md);
+            }
+
+            .welcome-message {
+                max-width: 95%;
+                padding: var(--space-lg) var(--space-md);
+            }
+
+            .chat-container {
+                height: 60vh;
+                padding: var(--space-md);
+            }
+
+            .input-container {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+
+            .send-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: var(--space-xs);
+            }
+
+            .action-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --surface: #121212;
+                --background: #1e1e1e;
+                --card-bg: #1e1e1e;
+                --border: #333333;
+                --text-primary: #e0e0e0;
+                --text-secondary: #bdbdbd;
+                --text-tertiary: #9e9e9e;
+                --primary-light: #2c2c54;
+            }
+            
+            .chat-container {
+                background-color: var(--card-bg);
+                border-color: var(--border);
+            }
+            
+            .message {
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            
+            .ai-message {
+                background-color: var(--surface);
+                border-color: var(--border);
+            }
+            
+            .chat-input {
+                background: var(--surface);
+                border-color: var(--border);
+                color: var(--text-primary);
+            }
+            
+            .chat-input:focus {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+            }
+            
+            .send-button {
+                box-shadow: 0 4px 12px rgba(67, 97, 238, 0.5);
+            }
+            
+            .send-button:hover {
+                box-shadow: 0 6px 16px rgba(67, 97, 238, 0.7);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- App Header -->
+        <header class="app-header">
+            <h1><i class="fas fa-robot"></i> AuraBot - Onestream AI Assistant</h1>
+            <p>A warm and intuitive conversational experience powered by Retrieval-Augmented Generation</p>
+        </header>
+
+        <!-- Status Indicator -->
+        <div class="status-indicator" id="statusIndicator">
+            <i class="fas fa-circle-check"></i>
+            <span>AuraBot is ready</span>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-container" id="chatContainer">
+            <div class="welcome-message" id="welcomeMessage">
+                <h3><i class="fas fa-hand-wave"></i> Hello! I'm AuraBot</h3>
+                <p>I'm your friendly AI assistant for Onestream documentation.</p>
+                <p>Ask me anything about:</p>
+                <ul>
+                    <li><i class="fas fa-book"></i> Onestream features and functionality</li>
+                    <li><i class="fas fa-lightbulb"></i> Best practices and implementation guides</li>
+                    <li><i class="fas fa-bug"></i> Troubleshooting and error resolution</li>
+                    <li><i class="fas fa-cogs"></i> Configuration and setup instructions</li>
+                </ul>
+                <p style="font-size: 2rem; margin: var(--space-md) 0;">🤖✨</p>
+                <p><em>Try asking: "How do I create a cube view in Onestream?" or "What are best practices for financial consolidation?"</em></p>
+            </div>
+            <div id="chatMessages"></div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <form id="chatForm" class="input-container">
+                <input type="text" class="chat-input" id="messageInput" placeholder="Ask a question about Onestream..." autocomplete="off">
+                <button type="submit" class="send-button" id="sendButton">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Send</span>
+                </button>
+            </form>
+            <div class="action-buttons">
+                <button class="action-button" id="clearButton">
+                    <i class="fas fa-trash"></i>
+                    Clear Chat
+                </button>
+                <button class="action-button" id="exportButton">
+                    <i class="fas fa-download"></i>
+                    Export Chat
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>AuraBot - Onestream AI Assistant | Powered by Retrieval-Augmented Generation</p>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const chatForm = document.getElementById('chatForm');
+        const sendButton = document.getElementById('sendButton');
+        const clearButton = document.getElementById('clearButton');
+        const exportButton = document.getElementById('exportButton');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Add message to chat
+        function addMessage(sender, content) {
+            // Remove welcome message if it exists
+            if (welcomeMessage && welcomeMessage.parentNode) {
+                welcomeMessage.remove();
+            }
+
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            // Create sender element
+            const senderDiv = document.createElement('div');
+            senderDiv.className = 'message-sender';
+            senderDiv.innerHTML = sender === 'user' ? 
+                '<i class="fas fa-user"></i> You' : 
+                '<i class="fas fa-robot"></i> AuraBot';
+            
+            // Create content element
+            const contentDiv = document.createElement('div');
+            contentDiv.textContent = content;
+            
+            // Append elements
+            messageDiv.appendChild(senderDiv);
+            messageDiv.appendChild(contentDiv);
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            // Remove welcome message if it exists
+            if (welcomeMessage && welcomeMessage.parentNode) {
+                welcomeMessage.remove();
+            }
+
+            // Create typing indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            
+            // Create text element
+            const textSpan = document.createElement('span');
+            textSpan.textContent = 'AuraBot is thinking';
+            
+            // Create dots container
+            const dotsDiv = document.createElement('div');
+            dotsDiv.className = 'typing-dots';
+            
+            // Create dots
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'typing-dot';
+                dotsDiv.appendChild(dot);
+            }
+            
+            // Append elements
+            typingDiv.appendChild(textSpan);
+            typingDiv.appendChild(dotsDiv);
+            chatMessages.appendChild(typingDiv);
+            
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Send message to server
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessage('user', message);
+            
+            // Clear input
+            messageInput.value = '';
+            
+            // Disable send button and show typing
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<div class="spinner"></div>';
+            showTypingIndicator();
+            
+            try {
+                // Send to server
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+                
+                const data = await response.json();
+                
+                // Hide typing and add AI response
+                hideTypingIndicator();
+                if (data.error) {
+                    addMessage('ai', `Error: ${data.error}`);
+                } else {
+                    addMessage('ai', data.ai_response);
+                }
+            } catch (error) {
+                hideTypingIndicator();
+                addMessage('ai', 'Sorry, I encountered an error. Please try again.');
+                console.error('Error:', error);
+            } finally {
+                // Re-enable send button
+                sendButton.disabled = false;
+                sendButton.innerHTML = '<i class="fas fa-paper-plane"></i><span>Send</span>';
+            }
+        }
+
+        // Clear chat
+        async function clearChat() {
+            if (confirm('Are you sure you want to clear the chat history?')) {
+                try {
+                    await fetch('/clear');
+                    chatMessages.innerHTML = '';
+                    
+                    // Show welcome message again
+                    if (!welcomeMessage || !welcomeMessage.parentNode) {
+                        const welcomeDiv = document.createElement('div');
+                        welcomeDiv.className = 'welcome-message';
+                        welcomeDiv.id = 'welcomeMessage';
+                        welcomeDiv.innerHTML = `
+                            <h3><i class="fas fa-hand-wave"></i> Hello! I'm AuraBot</h3>
+                            <p>I'm your friendly AI assistant for Onestream documentation.</p>
+                            <p>Ask me anything about:</p>
+                            <ul>
+                                <li><i class="fas fa-book"></i> Onestream features and functionality</li>
+                                <li><i class="fas fa-lightbulb"></i> Best practices and implementation guides</li>
+                                <li><i class="fas fa-bug"></i> Troubleshooting and error resolution</li>
+                                <li><i class="fas fa-cogs"></i> Configuration and setup instructions</li>
+                            </ul>
+                            <p style="font-size: 2rem; margin: var(--space-md) 0;">🤖✨</p>
+                            <p><em>Try asking: "How do I create a cube view in Onestream?" or "What are best practices for financial consolidation?"</em></p>
+                        `;
+                        chatMessages.appendChild(welcomeDiv);
+                    }
+                } catch (error) {
+                    console.error('Error clearing chat:', error);
+                }
+            }
+        }
+
+        // Export chat
+        function exportChat() {
+            // In a real implementation, this would fetch the chat history and create a download
+            alert('Chat export functionality would be implemented here.');
+        }
+
+        // Event listeners
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sendMessage();
+        });
+        
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        clearButton.addEventListener('click', clearChat);
+        exportButton.addEventListener('click', exportChat);
+
+        // Focus input on load
+        window.addEventListener('load', () => {
+            messageInput.focus();
+        });
+    </script>
+</body>
+</html>
