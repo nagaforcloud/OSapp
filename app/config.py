@@ -100,6 +100,10 @@ DISTANCE = "COSINE"  # COSINE, DOT, EUCLID
 LLM_MODEL = get_env_var("LLM_MODEL", "deepseek-chat")
 EMBEDDING_MODEL = get_env_var("EMBEDDING_MODEL", "text-embedding-ada-002")
 
+# --- Inference Service Configuration ---
+USE_LOCAL_LLM = get_env_var("USE_LOCAL_LLM", "false").lower() == "true"
+LLM_SERVICE_URL = get_env_var("LLM_SERVICE_URL", "http://llm-service:8000")
+
 # --- Qwen Coder Plus Settings ---
 QWEN_CODER_MODEL = get_env_var("QWEN_CODER_MODEL", "qwen-coder-plus")
 

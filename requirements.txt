@@ -17,14 +17,16 @@ requests>=2.31.0
 beautifulsoup4>=4.12.2
 pdfkit>=0.6.1
 weasyprint>=60.0
-llama-cpp-python>=0.2.0
 googlesearch-python>=1.2.3
 pandas>=2.1.0
 fpdf>=2.7.0
 pydantic>=2.5.0
 openai>=1.3.0
 langchain-text-splitters>=0.0.1
-gradio>=4.0.0
 psutil>=5.9.0
 numpy>=1.24.0
 sentence-transformers>=2.2.0
+# Removed heavy dependencies for local LLM to reduce container size
+# Use dedicated inference service instead
+# llama-cpp-python>=0.2.0
+# gradio>=4.0.0

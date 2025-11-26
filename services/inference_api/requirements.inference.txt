@@ -1,0 +1,25 @@
+# services/inference_api/requirements.inference.txt
+# Lightweight dependencies for LLM inference service
+
+# Core dependencies
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+python-decouple>=3.8
+
+# LLM inference
+llama-cpp-python>=0.2.0
+sentence-transformers>=2.2.0
+numpy>=1.24.0
+
+# Optional: For GPU support (uncomment if using GPU)
+# torch>=2.0.0
+# transformers>=4.35.0
+
+# Monitoring and logging
+structlog>=23.1.0
+prometheus-client>=0.18.0
+
+# HTTP utilities
+httpx>=0.25.0
+aiofiles>=23.2.0
