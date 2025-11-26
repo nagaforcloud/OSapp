@@ -6,8 +6,13 @@ Provides structured logging with different levels and contextual information.
 
 import logging
 import os
-from typing import Optional
+import json
+import uuid
+import time
+from typing import Optional, Dict, Any
 from datetime import datetime
+from contextlib import contextmanager
+from functools import wraps
 
 class AppLogger:
     """Enhanced application logger with structured logging capabilities."""
